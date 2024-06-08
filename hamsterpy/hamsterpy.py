@@ -79,11 +79,11 @@ class HamsterClient:
 	
 	def autoclick(self):
 		while True:
-			data = client.sync_clicker()['clickerUser']
+			data = self.sync_clicker()['clickerUser']
 			available_taps = data["availableTaps"]
 			if available_taps >= 10:
 				time.sleep(1)
-				client.tap(data["maxTaps"], data["availableTaps"])
+				self.tap(data["maxTaps"], data["availableTaps"])
 			time.sleep(1)
 
 	def autoprint(self):
