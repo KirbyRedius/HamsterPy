@@ -13,6 +13,8 @@
 4. copy the result and paste it into the **user.txt** file
 
 ## Start coding
+        pip install hamsterpy
+
     from  hamsterpy  import  HamsterClient
     client  =  HamsterClient()
     client.auth()
