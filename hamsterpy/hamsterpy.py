@@ -1,6 +1,7 @@
 import requests
 import time
 from threading import Thread
+from hamsterpy.constants import BOOST_FULL_AVAILABLE_TAPS
 
 class HamsterClient:
 	def __init__(self):
@@ -12,19 +13,19 @@ class HamsterClient:
 		self.available_taps = None
 		self.max_taps = None
 		self.headers = {
-        'Accept': '*/*',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Authorization': f'Bearer {self.token}',
-        'Connection': 'keep-alive',
-        'Origin': 'https://hamsterkombat.io',
-        'Referer': 'https://hamsterkombat.io/',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'same-site',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-        'Content-Type': 'application/json'
+			'Accept': '*/*',
+			'Accept-Language': 'en-US,en;q=0.9',
+			'Authorization': f'Bearer {self.token}',
+			'Connection': 'keep-alive',
+			'Origin': 'https://hamsterkombat.io',
+			'Referer': 'https://hamsterkombat.io/',
+			'Sec-Fetch-Dest': 'empty',
+			'Sec-Fetch-Mode': 'cors',
+			'Sec-Fetch-Site': 'same-site',
+			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+			'Content-Type': 'application/json'
    
-    }
+    	}
 
 	def request(self, path, data = None, headers = None):
 		url = f"{self.api}/{path}"
@@ -70,20 +71,20 @@ class HamsterClient:
 		data = {"count": max_taps, "availableTaps": available_taps, "timestamp": int(time.time())}
 		return self.request("clicker/tap", data=data)
 	
-	def upgrade(self, upgrade_type):
+	def buy_boost(self, upgrade_type):
 		data = {"boostId": upgrade_type, "timestamp": int(time.time())}
 		return self.request("clicker/buy-boost", data=data)
 	
-	def boost_max_taps(self):
-		return self.upgrade("BoostMaxTaps")
-	
 	def autoclick(self):
+		boosted_time = 0
 		while True:
 			data = self.sync_clicker()['clickerUser']
 			available_taps = data["availableTaps"]
 			if available_taps >= 10:
-				time.sleep(1)
 				self.tap(data["maxTaps"], data["availableTaps"])
+			if time.time() - boosted_time >= 60 * 60:
+				self.buy_boost(BOOST_FULL_AVAILABLE_TAPS)
+				boosted_time = time.time()
 			time.sleep(1)
 
 	def autoprint(self):
