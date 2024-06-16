@@ -15,11 +15,12 @@
 ## Start coding
 
 > pip install hamsterpy
-
-    from  hamsterpy  import  HamsterClient
-    client  =  HamsterClient()
-    client.auth()
-    client.autofarm(taps=True, print_info=True)
+```python
+from hamsterpy import HamsterClient
+client = HamsterClient()
+client.auth()
+client.autofarm(taps=True, print_info=True)
+```
 
 # TODO
 Soon it is planned to add auto-pumping of items
