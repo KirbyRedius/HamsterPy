@@ -4,7 +4,7 @@ from threading import Thread
 
 class HamsterClient:
 	def __init__(self):
-		self.user_data = open("user.txt").read().stripe()
+		self.user_data = open("user.txt").read().strip()
 		self.api = "https://api.hamsterkombat.io/"
 		self.token = ""
 		self.balance_coins = None
